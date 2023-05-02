@@ -14,7 +14,7 @@ api_log = APILog()
 # 设置Redis客户端
 api_log.set_redis_client(redis_client)
 
-api_log.set_table('api_logs')
+api_log.set_table(123)
 api_log.set_service('my_service')
 
 api_log.append('/api/v1/user/123', 'GET', {'param1': 'value1', 'param2': 'value2'})
@@ -22,4 +22,6 @@ api_log.append('/api/v1/user/456', 'POST', {'param3': 'value3', 'param4': 'value
 
 logs = api_log.get_logs()
 for log in logs:
+    # Q:如何输出set_table名字
     print(log)
+

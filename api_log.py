@@ -9,8 +9,8 @@ class APILog:
         self.table = None
         self.service = None
 
-    def set_table(self, table_name):
-        self.table = table_name
+    def set_table(self, room_id):
+        self.table = 'room:' + str(room_id)
 
     def set_service(self, service_name):
         self.service = service_name
@@ -25,8 +25,9 @@ class APILog:
         timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
 
         log_entry = {
+            'room_id': self.table,
             'service': self.service,
-            'url': url,
+            'path': url,
             'method': method,
             'args': args,
             'timestamp': timestamp,
@@ -40,4 +41,6 @@ class APILog:
             raise ValueError("Table must be set before retrieving logs.")
 
         logs = self.redis.lrange(self.table, 0, -1)
-        return [json.loads(log) for log in logs]
+        return [[json.loads(log) for log in logs]]
+        # 返回table名
+        # return [self.table, [json.loads(log) for log in logs]]
